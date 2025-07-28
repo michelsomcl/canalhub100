@@ -27,6 +27,7 @@ export default function Companies() {
     nome: "",
     ticker: "",
     link_ri: "",
+    categoria: "" as 'Industria' | 'Financas' | "",
   });
   const { toast } = useToast();
 
@@ -43,7 +44,10 @@ export default function Companies() {
         .order('nome');
 
       if (error) throw error;
-      setCompanies(data || []);
+      setCompanies((data || []).map(item => ({
+        ...item,
+        categoria: item.categoria as 'Industria' | 'Financas' | undefined
+      })));
     } catch (error) {
       console.error('Erro ao carregar empresas:', error);
       toast({
@@ -67,7 +71,8 @@ export default function Companies() {
           .update({
             nome: formData.nome,
             ticker: formData.ticker,
-            link_ri: formData.link_ri
+            link_ri: formData.link_ri,
+            categoria: formData.categoria || null
           })
           .eq('id', editingCompany.id);
 
@@ -84,7 +89,8 @@ export default function Companies() {
           .insert({
             nome: formData.nome,
             ticker: formData.ticker,
-            link_ri: formData.link_ri
+            link_ri: formData.link_ri,
+            categoria: formData.categoria || null
           });
 
         if (error) throw error;
@@ -113,6 +119,7 @@ export default function Companies() {
       nome: company.nome,
       ticker: company.ticker,
       link_ri: company.link_ri,
+      categoria: company.categoria || "",
     });
     setIsDialogOpen(true);
   };
@@ -145,7 +152,7 @@ export default function Companies() {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setEditingCompany(null);
-    setFormData({ nome: "", ticker: "", link_ri: "" });
+    setFormData({ nome: "", ticker: "", link_ri: "", categoria: "" });
   };
 
   return (
@@ -203,6 +210,19 @@ export default function Companies() {
                     placeholder="Ex: https://ri.romi.com"
                     required
                   />
+                </div>
+                
+                <div>
+                  <Label htmlFor="categoria">Categoria</Label>
+                  <Select value={formData.categoria} onValueChange={(value) => setFormData({ ...formData, categoria: value as any })}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione uma categoria" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Industria">Indústria</SelectItem>
+                      <SelectItem value="Financas">Finanças</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div className="flex gap-2 pt-4">

@@ -3,6 +3,7 @@ export interface Company {
   nome: string;
   ticker: string;
   link_ri: string;
+  categoria?: 'Industria' | 'Financas';
   created_at?: string;
   updated_at?: string;
 }
@@ -59,4 +60,5 @@ export interface IndicatorDefinition {
   unit: 'currency' | 'percentage' | 'ratio';
   description: string;
   sql_column: string;
+  categoria?: 'Industria' | 'Financas';
 }

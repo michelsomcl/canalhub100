@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       companies: {
         Row: {
+          categoria: string | null
           created_at: string
           id: string
           link_ri: string | null
@@ -24,6 +25,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          categoria?: string | null
           created_at?: string
           id?: string
           link_ri?: string | null
@@ -32,6 +34,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          categoria?: string | null
           created_at?: string
           id?: string
           link_ri?: string | null
@@ -59,7 +62,6 @@ export type Database = {
           liquidez_geral: number | null
           lucro_liquido_apos_impostos: number | null
           lucro_operacional_antes_receita_despesa_nao_recorrente: number | null
-          lucro_por_acao: number | null
           margem_ebitda_percent: number | null
           margem_liquida_percent: number | null
           margem_lucro_bruto_percent: number | null
@@ -92,7 +94,6 @@ export type Database = {
           liquidez_geral?: number | null
           lucro_liquido_apos_impostos?: number | null
           lucro_operacional_antes_receita_despesa_nao_recorrente?: number | null
-          lucro_por_acao?: number | null
           margem_ebitda_percent?: number | null
           margem_liquida_percent?: number | null
           margem_lucro_bruto_percent?: number | null
@@ -125,7 +126,6 @@ export type Database = {
           liquidez_geral?: number | null
           lucro_liquido_apos_impostos?: number | null
           lucro_operacional_antes_receita_despesa_nao_recorrente?: number | null
-          lucro_por_acao?: number | null
           margem_ebitda_percent?: number | null
           margem_liquida_percent?: number | null
           margem_lucro_bruto_percent?: number | null
@@ -153,6 +153,7 @@ export type Database = {
       }
       indicator_definitions: {
         Row: {
+          categoria: string | null
           category: string
           created_at: string
           description: string | null
@@ -164,6 +165,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          categoria?: string | null
           category: string
           created_at?: string
           description?: string | null
@@ -175,6 +177,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          categoria?: string | null
           category?: string
           created_at?: string
           description?: string | null
