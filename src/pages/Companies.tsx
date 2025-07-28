@@ -4,12 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Edit, Trash2, Plus, ExternalLink } from "lucide-react";
 import { Company } from "@/types/company";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 // Mock data
 const mockCompanies: Company[] = [
@@ -248,6 +248,7 @@ export default function Companies() {
                 <TableRow>
                   <TableHead>Nome</TableHead>
                   <TableHead>Ticker</TableHead>
+                  <TableHead>Categoria</TableHead>
                   <TableHead>Link do RI</TableHead>
                   <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
@@ -257,6 +258,15 @@ export default function Companies() {
                   <TableRow key={company.id}>
                     <TableCell className="font-medium">{company.nome}</TableCell>
                     <TableCell>{company.ticker}</TableCell>
+                    <TableCell>
+                      {company.categoria ? (
+                        <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                          {company.categoria === 'Industria' ? 'Indústria' : 'Finanças'}
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">Não definida</span>
+                      )}
+                    </TableCell>
                     <TableCell>
                       <a
                         href={company.link_ri}

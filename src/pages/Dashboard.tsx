@@ -107,7 +107,10 @@ export default function Dashboard() {
 
       if (error) throw error;
       
-      setCompanies(data || []);
+      setCompanies((data || []).map(item => ({
+        ...item,
+        categoria: item.categoria as 'Industria' | 'Financas' | undefined
+      })));
       if (data && data.length > 0) {
         setSelectedCompany(data[0].id);
       }

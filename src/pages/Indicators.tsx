@@ -94,12 +94,14 @@ export default function Indicators() {
     category: IndicatorDefinition['category'];
     unit: IndicatorDefinition['unit'];
     description: string;
+    categoria: 'Industria' | 'Financas' | '';
   }>({
     name: "",
     field_name: "",
     category: "revenue",
     unit: "currency",
     description: "",
+    categoria: "",
   });
   const { toast } = useToast();
 
@@ -124,7 +126,8 @@ export default function Indicators() {
         category: item.category as IndicatorDefinition['category'],
         unit: item.unit as IndicatorDefinition['unit'],
         description: item.description || "",
-        sql_column: item.sql_column
+        sql_column: item.sql_column,
+        categoria: item.categoria as 'Industria' | 'Financas' | undefined
       }));
 
       setIndicators(formattedIndicators);
@@ -171,7 +174,8 @@ export default function Indicators() {
             category: formData.category,
             unit: formData.unit,
             description: formData.description,
-            sql_column: sqlColumn
+            sql_column: sqlColumn,
+            categoria: formData.categoria || null
           })
           .eq('id', editingIndicator.id);
 
@@ -190,7 +194,8 @@ export default function Indicators() {
             category: formData.category,
             unit: formData.unit,
             description: formData.description,
-            sql_column: sqlColumn
+            sql_column: sqlColumn,
+            categoria: formData.categoria || null
           });
 
         if (error) throw error;
@@ -221,6 +226,7 @@ export default function Indicators() {
       category: indicator.category,
       unit: indicator.unit,
       description: indicator.description,
+      categoria: indicator.categoria || "",
     });
     setIsDialogOpen(true);
   };
@@ -253,7 +259,7 @@ export default function Indicators() {
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setEditingIndicator(null);
-    setFormData({ name: "", field_name: "", category: "revenue", unit: "currency", description: "" });
+    setFormData({ name: "", field_name: "", category: "revenue", unit: "currency", description: "", categoria: "" });
   };
 
   const copySqlToClipboard = (sql: string) => {
@@ -352,6 +358,21 @@ export default function Indicators() {
                 </div>
                 
                 <div>
+                  <Label htmlFor="categoria">Categoria da Empresa</Label>
+                  <Select value={formData.categoria} onValueChange={(value) => 
+                    setFormData({ ...formData, categoria: value as any })
+                  }>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione a categoria" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Industria">Indústria</SelectItem>
+                      <SelectItem value="Financas">Finanças</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
                   <Label htmlFor="description">Descrição</Label>
                   <Textarea
                     id="description"
@@ -395,6 +416,7 @@ export default function Indicators() {
                   <TableHead>Nome</TableHead>
                   <TableHead>Campo</TableHead>
                   <TableHead>Categoria</TableHead>
+                  <TableHead>Categoria Empresa</TableHead>
                   <TableHead>Unidade</TableHead>
                   <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
@@ -419,6 +441,15 @@ export default function Indicators() {
                       <Badge className={categoryColors[indicator.category]}>
                         {categoryLabels[indicator.category]}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {indicator.categoria ? (
+                        <span className="px-2 py-1 bg-secondary/10 text-secondary-foreground rounded-full text-sm">
+                          {indicator.categoria === 'Industria' ? 'Indústria' : 'Finanças'}
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">Não definida</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {indicator.unit === 'currency' && 'R$'}
